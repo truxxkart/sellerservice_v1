@@ -1,6 +1,7 @@
 package com.truxxkart.sellerservice_v1.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.truxxkart.sellerservice_v1.entity.ProductSize;
 import com.truxxkart.sellerservice_v1.entity.ProductVariant;
 import com.truxxkart.sellerservice_v1.service.ProductVariantService;
+import com.truxxkart.sellerservice_v1enums.ColorType;
 
 @RestController
 @RequestMapping("/product-variants")
@@ -43,6 +45,14 @@ public class ProductVariantController {
 		return ResponseEntity.status(HttpStatus.OK).body(pvList);
 	}
 	
+	@GetMapping("/sorted")
+	public ResponseEntity<Set<ProductVariant>> getProductVariantBaseOnSortedProductSizeByPriceInAsc(){
+		Set<ProductVariant> pvList =pvService.getProductVariantBaseOnSortedProductSizeByPriceInAsc();
+		return ResponseEntity.status(HttpStatus.OK).body(pvList);
+	}
+	
+	
+	
 	@GetMapping("/status")
 	public ResponseEntity<List<ProductVariant>> getProductVariantsByStatus(@RequestParam String field,@RequestParam Boolean  findBy){
 		List<ProductVariant> pvList =pvService.getProductVariantsByStatus(field, findBy);
@@ -50,7 +60,7 @@ public class ProductVariantController {
 	}
 	
 	@PutMapping("/update/color/id/{variantId}")
-	public ResponseEntity<ProductVariant> updateProductVariantColor(@PathVariable Long variantId,@RequestParam String color){
+	public ResponseEntity<ProductVariant> updateProductVariantColor(@PathVariable Long variantId,@RequestParam ColorType color){
 		ProductVariant pv =pvService.updateProductVariantColor(variantId, color);
 		return ResponseEntity.status(HttpStatus.OK).body(pv);
 	}

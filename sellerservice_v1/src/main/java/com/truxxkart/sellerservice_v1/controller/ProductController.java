@@ -42,6 +42,12 @@ public class ProductController {
 		return ResponseEntity.status(HttpStatus.OK).body(prodList);
 	}
 	
+	
+	@GetMapping("/sorted")
+	public ResponseEntity<List<Product>> getProductsSortedByPrice(){
+		List<Product> prodList =prodService.getProductsSortedByPrice();
+		return ResponseEntity.status(HttpStatus.OK).body(prodList);
+	}
 	@GetMapping("/sorted/price/desc")
 	public ResponseEntity<List<Product>> getAllSortedProductsByDesc(){
 		List<Product> prodList =prodService.sortedProductsByPriceDescending();

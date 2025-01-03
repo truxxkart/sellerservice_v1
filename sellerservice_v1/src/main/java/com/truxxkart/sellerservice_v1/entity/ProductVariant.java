@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.truxxkart.sellerservice_v1enums.ColorType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ public class ProductVariant {
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
-	    private String color;
+	    private ColorType color;
 	    private Double price;
 	    private Double discountedPrice;
 	    private List<String> imageUrl;
@@ -34,7 +35,7 @@ public class ProductVariant {
 	    @JsonIgnore
 //	    @JoinColumn(name = "product_id")
 	    private Product product;
-	    
+	    @JsonIgnore
 	    @OneToMany(mappedBy = "productVariant", cascade = CascadeType.ALL)
 	    private List<ProductSize> sizes;
 

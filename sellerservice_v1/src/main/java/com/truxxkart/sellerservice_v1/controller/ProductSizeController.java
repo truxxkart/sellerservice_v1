@@ -36,6 +36,14 @@ public class ProductSizeController {
 		return ResponseEntity.status(HttpStatus.OK).body(psList);
 	}
 	
+	@GetMapping("/sorted/asc")
+	public ResponseEntity<List<ProductSize>>  sortProductSizesByPrice(){
+		List<ProductSize> psList =psService.sortProductSizesByPrice();
+		return ResponseEntity.status(HttpStatus.OK).body(psList);
+	}
+	
+	
+	
 	
 	@GetMapping("/product-sizeId/{psId}")
 	public ResponseEntity<ProductSize> getProductSizeBySizeId(@PathVariable Long psId){

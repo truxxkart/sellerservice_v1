@@ -16,6 +16,7 @@ import com.truxxkart.sellerservice_v1.entity.Brand;
 import com.truxxkart.sellerservice_v1.entity.Category;
 import com.truxxkart.sellerservice_v1.entity.PostalCodeMapping;
 import com.truxxkart.sellerservice_v1.entity.Product;
+import com.truxxkart.sellerservice_v1.entity.ProductSize;
 import com.truxxkart.sellerservice_v1.entity.User;
 import com.truxxkart.sellerservice_v1.repository.BrandRepository;
 import com.truxxkart.sellerservice_v1.repository.CategoryRepository;
@@ -105,6 +106,24 @@ public class ProductServiceImpl implements ProductService {
 		Collections.sort(products, productSortByPrice.reversed());
 		return products;
 	}
+	
+	
+	@Override
+	  public List<Product> getProductsSortedByPrice() {
+	        return productRepo.findAll()
+	                .stream()
+	                .sorted(Comparator.comparingDouble(
+	                        product -> product.getVariants().stream()
+	                                .flatMap(variant -> variant.getSizes().stream())
+	                                .mapToDouble(ProductSize :: getAdditionalDiscountedPrice)
+	                                .min()
+	                                .orElse(Double.MAX_VALUE)
+	                ))
+	                .collect(Collectors.toList());
+	    }
+	
+	
+	
 
 	@Override
 	public List<Product> sortedProductsByPriceAscending() {
