@@ -23,12 +23,13 @@ public class ProductSize {
     private Long id;
 
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     private ProductVariant productVariant;
 
     @Column(nullable = false, length = 20)
     private String size;
 
+   
     @Column(nullable = false)
     private Double additionalPrice;
 

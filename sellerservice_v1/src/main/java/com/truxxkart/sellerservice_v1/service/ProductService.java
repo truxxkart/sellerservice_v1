@@ -16,7 +16,7 @@ public interface ProductService {
 	   public Product updateProductBrand(Long productId,Long brandId);
 	   public Product updateProductcategory(Long productId,Long categoryId);
 	   public Product updateProductOcassion(Long productId ,OcassionEnumType ocassion);
-	   
+	   public List<Product> getProductsSortedByPrice();
 	   public List<Product> sortedProductsByPriceDescending();
 	   public List<Product> sortedProductsByPriceAscending();
 	   public List<Product> sortedProductsByRatingDescending();

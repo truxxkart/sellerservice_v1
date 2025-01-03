@@ -1,5 +1,7 @@
 package com.truxxkart.sellerservice_v1.serviceImpl;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -7,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.truxxkart.sellerservice_v1.entity.Product;
 import com.truxxkart.sellerservice_v1.entity.ProductSize;
 import com.truxxkart.sellerservice_v1.entity.ProductVariant;
 import com.truxxkart.sellerservice_v1.repository.ProductSizeRepository;
@@ -142,6 +145,24 @@ public class ProductSizeServiceImpl implements ProductSizeService {
 	public String deleteProductSize(Long prodSizeId) {
 		psRepo.deleteById(prodSizeId);
 		return "Product's size is deleted" ;
+	}
+	
+	
+//	
+//	@Override
+//	public List<Product> sortedProductsByPriceDescending() {
+//		List<Product> products =productRepo.findAll();
+//		Comparator<Product> productSortByPrice =Comparator.comparing(Product :: getPrice);
+//		Collections.sort(products, productSortByPrice.reversed());
+//		return products;
+//	}
+
+	@Override
+	public List<ProductSize> sortProductSizesByPrice() {
+		List<ProductSize> productSizes=psRepo.findAll();
+		Comparator<ProductSize> psSortedByPrice=Comparator.comparing(ProductSize :: getAdditionalDiscountedPrice);
+		Collections.sort(productSizes,psSortedByPrice);
+		return productSizes;
 	}
 
 }

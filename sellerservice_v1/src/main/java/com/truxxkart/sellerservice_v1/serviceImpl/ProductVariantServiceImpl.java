@@ -1,7 +1,11 @@
 package com.truxxkart.sellerservice_v1.serviceImpl;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -19,7 +23,9 @@ import com.truxxkart.sellerservice_v1.entity.ProductVariant;
 import com.truxxkart.sellerservice_v1.repository.ProductRepository;
 import com.truxxkart.sellerservice_v1.repository.ProductSizeRepository;
 import com.truxxkart.sellerservice_v1.repository.ProductVariantRepository;
+import com.truxxkart.sellerservice_v1.service.ProductSizeService;
 import com.truxxkart.sellerservice_v1.service.ProductVariantService;
+import com.truxxkart.sellerservice_v1enums.ColorType;
 
 @Service
 public class ProductVariantServiceImpl implements ProductVariantService{
@@ -30,6 +36,8 @@ public class ProductVariantServiceImpl implements ProductVariantService{
 	private ProductRepository prodRepo;
 	@Autowired
 	private ProductSizeRepository psRepo;
+	@Autowired
+	private ProductSizeService psService;
 	
 	@Override
 	public List<ProductVariant> getProductVariantByProductId(Long productId) {
@@ -86,8 +94,22 @@ public class ProductVariantServiceImpl implements ProductVariantService{
 		}
 		return null;
 	}
+	
 	@Override
-	public ProductVariant updateProductVariantColor(Long variantId, String color) {
+	public ProductVariant getProductVariantsByColor(ColorType color, Long productId) {
+		Optional<Product> optProduct =prodRepo.findById(productId);
+	    if(optProduct.isPresent()) {
+	    	ProductVariant prodVariant=optProduct.get().getVariants().stream().filter(pv->pv.getColor().equals(color)).findAny().get();
+	    	prodVariant.setColor(color);
+	    	return pvRepo.save(prodVariant);
+	    	
+	    }
+		return null;
+	}
+	
+	
+	@Override
+	public ProductVariant updateProductVariantColor(Long variantId, ColorType color) {
 		Optional<ProductVariant> optPV =pvRepo.findById(variantId);
 	    if(optPV.isPresent()) {
 	    	ProductVariant prodVariant=optPV.get();
@@ -133,4 +155,14 @@ public class ProductVariantServiceImpl implements ProductVariantService{
 	    	}
 		return null;
 	}
+	@Override
+	public Set<ProductVariant> getProductVariantBaseOnSortedProductSizeByPriceInAsc() {
+		List<ProductSize> sortedProductSizeList =psService.sortProductSizesByPrice();
+		Set<ProductVariant> response =new LinkedHashSet<ProductVariant>();
+		            sortedProductSizeList.stream().forEach(ps->{
+		            	response.add(ps.getProductVariant());
+		            });  
+		return response;
+	}
+	
 }

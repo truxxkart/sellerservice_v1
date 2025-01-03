@@ -11,7 +11,7 @@ public interface ProductSizeService {
 	public List<ProductSize> getProductSizeByProductVariantId(Long pvId) ;
 	public ProductSize getProductSizeBySizeId(Long prodSizeId);
 	public List<ProductSize> getAllProductSizes();
-	
+	public List<ProductSize> sortProductSizesByPrice();
 	public List<ProductSize> getAllProductSizesByStatus(String field,Boolean findBy);
 	public ProductSize updateSize(Long prodSizeId,String size);
 	public ProductSize updatePrice(Long prodSizeId,Double additionalPrice,Double additionalDiscountedPrice);
